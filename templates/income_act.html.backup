@@ -1,0 +1,222 @@
+$def with (d)
+<table cellspacing="0" border="0">
+	<colgroup width="42"></colgroup>
+	<colgroup width="115"></colgroup>
+	<colgroup width="119"></colgroup>
+	<colgroup width="284"></colgroup>
+	<colgroup width="39"></colgroup>
+	<colgroup width="44"></colgroup>
+	<colgroup width="167"></colgroup>
+	<colgroup width="149"></colgroup>
+	<colgroup width="141"></colgroup>
+	<tr>
+		<td height="38" align="left"><br></td>
+		<td align="center"><br></td>
+		<td align="left"><br></td>
+		<td align="center"><b><u><font face="Times New Roman" size=3>АКТ № $d.document_id</font></u></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="29" align="left"><br></td>
+		<td align="left"><br></td>
+		<td colspan=5 align="center"><b><font size=3>приема-передачи материальных ценностей</font></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="11" align="left"><br></td>
+		<td align="left"><b><font face="Times New Roman" size=4><br></font></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="30" align="left"><br></td>
+		<td align="center"><b><font face="Times New Roman" size=3 color="#000000"><br></font></b></td>
+		<td align="left"><br></td>
+		<td align="left" colspan = '3'>$d.date</td>
+		<td align="center"><b><font face="Times New Roman" size=3 color="#000000"><br></font></b></td>
+		<td align="center"><b><font face="Times New Roman" size=3 color="#000000"> </font></b></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="15" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left" valign=top>      число                                            месяц</td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="23" align="left"><br></td>
+		<td colspan=2 align="left"><b><font size=3>Представитель:</font></b></td>
+		<td align="left" valign=top colspan=6>$full_in_charge_by_id(d.person_from)<br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="16" align="left"><br></td>
+		<td align="center"><br></td>
+		<td colspan=6 align="center"><font face="Times New Roman" color="#000000" size=2>(название обособленного подразделения, региона, филиала ЗАО &quot;ЭБС&quot;, сторонней организации, Ф.И.О)</font></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="22" align="left"><br></td>
+		<td colspan=2 align="left"><b><font size=3>и представитель:</font></b></td>
+		<td align="left"><font face="Times New Roman" size=3 colspan=6>$full_in_charge_by_id(d.person_to)<br></font></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="16" align="left"><br></td>
+		<td align="center"><br></td>
+		<td colspan=6 align="center"><font face="Times New Roman" color="#000000" size=2>(название обособленного подразделения, региона, филиала ЗАО &quot;ЭБС&quot;, сторонней организации, Ф.И.О.)</font></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="25" align="left"><br></td>
+		<td style="border-bottom: 1px solid #3c3c3c" colspan=7 align="left" valign=middle><b>составили настоящий акт о том, что первый передал, а второй принял следующие товарно-материальные ценности:</b></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" height="35" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">№ п.п.</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">код товара (маркировка)</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">оборудование (наименование, тип)</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">кол-во</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">Ед. изм.</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">серийный №</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">инвентарный №</font></b></td>
+		<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#CCFFCC"><b><font face="Times New Roman">Примечание</font></b></td>
+	</tr>
+  $ pos = positions_by_id()
+  $ itm_s = items_serials()
+	$ count = 0
+	$for m in d.movements:
+		$ count += 1
+		<tr>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" height="36" align="center" valign=middle>$count</td>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle><font face="Arial">$pos[m.position_id].code</font></td>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle sdnum="1033;0;@" width="600"><font size=3>$pos[m.position_id].name</font></td>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle bgcolor="#FFFFFF">$m.amount</td>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle><font face="Times New Roman">$pos[m.position_id].unit</font></td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle sdnum="1033;0;@">$itm_s[m.item_id]</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle sdnum="1033;0;@"><br></td>
+			<td style="border-top: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; border-left: 1px solid #3c3c3c; border-right: 1px solid #3c3c3c" align="center" valign=middle><font face="Times New Roman"><br></font></td>
+		</tr>
+	<tr>
+		<td height="18" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="18" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="18" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="18" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left">$in_charge_by_id(d.person_from)</td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="21" align="left"><br></td>
+		<td align="left"><font face="Times New Roman" size=3><br></font></td>
+		<td style="border-top: 1px solid #3c3c3c" colspan=2 align="left"><u>Передал:                                                                             </u></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="21" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="center">подпись</td>
+		<td align="left">М.П.</td>
+		<td align="left"><br></td>
+		<td align="right">фамилия, инициалы</td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="21" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="center"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="center"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="20" align="left"><br></td>
+		<td align="left"><b><font face="Times New Roman" color="#000000"><br></font></b></td>
+		<td style="border-top: 1px solid #3c3c3c" colspan=2 align="left"><u>Принял:                                                                                </u></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left">$in_charge_by_id(d.person_to)</td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="21" align="left"><br></td>
+		<td align="left"><font face="Times New Roman" color="#000000"><br></font></td>
+		<td align="left"><br></td>
+		<td align="center">подпись</td>
+		<td align="left">М.П.</td>
+		<td align="left"><br></td>
+		<td align="right">фамилия, инициалы</td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+</table>

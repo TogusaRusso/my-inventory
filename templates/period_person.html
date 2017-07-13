@@ -1,0 +1,49 @@
+$def with (period, person, start, end)
+  <h1>Движения на $person с $start по $end</h1>
+  <table>
+  <th>
+  	<td>
+  		Позиция
+  	</td>
+  	<td>
+  		Серийный №
+  	</td>
+  	<td>
+  		ед.изм.
+  	</td>
+    <td>
+  		Получил
+  	</td>
+  	<td>
+  		Выдал
+  	</td>
+  	<td>
+  		Итого
+  	</td>
+  </th>
+  $ p_k = period.keys()
+  $ p_k.sort(key = lambda p: p[0] + p[1]) 
+  $for position in p_k:
+    	<tr>
+      	<td>
+        </td>
+        <td>
+        	$position[0]
+        </td>
+        <td>
+        	$position[1]
+        </td>
+        <td>
+        	$position[2]
+        </td>
+        <td>
+        	$period[position][0]
+        </td>
+        <td>
+        	$period[position][1]
+        </td>
+        <td>
+        	$(period[position][0] - period[position][1])
+        </td>
+      </tr>
+  </table>

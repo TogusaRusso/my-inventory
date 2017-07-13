@@ -1,0 +1,132 @@
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.31.0/react-bootstrap.min.js"></script>
+<script type="text/babel">
+const ListGroup = ReactBootstrap.ListGroup
+const ListGroupItem = ReactBootstrap.ListGroupItem
+const ButtonGroup = ReactBootstrap.ButtonGroup
+const FormGroup = ReactBootstrap.FormGroup
+const InputGroup = ReactBootstrap.InputGroup
+const FormControl = ReactBootstrap.FormControl
+const DropdownButton = ReactBootstrap.DropdownButton
+const Dropdown = ReactBootstrap.Dropdown
+const MenuItem = ReactBootstrap.MenuItem
+const Button = ReactBootstrap.Button
+const Glyphicon = ReactBootstrap.Glyphicon
+
+class InputRow extends React.Component {
+	constructor(props) {
+		super(props) 
+    	this.state = { 
+    		itemClasses: [],
+    		positions: [],
+    		itemClass: {},
+    		position: {},
+    		showClasses: false,
+    		showPositions: false,
+    		positionText: ''
+    	}
+    	this.handleSelect = this.handleSelect.bind(this)
+    	this.handleClassesClick = this.handleClassesClick.bind(this)
+    	this.handlePositionsClick = this.handlePositionsClick.bind(this)
+  }
+  handleClassesClick() {
+  	const showPositions = false;
+  	const showClasses = !this.state.showClasses;
+  	this.setState({showPositions, showClasses})
+  }
+  handlePositionsClick() {
+  	const showClasses = false;
+  	const showPositions = !this.state.showPositions;
+  	this.setState({showPositions, showClasses})
+  }
+  handleSelect(eventKey) {
+  	let array = this.state.showClasses ? this.state.itemClasses : this.state.positions
+  	let index = array.findIndex(
+  		e =>  eventKey == (this.state.showClasses ? e.id : e.position_id))
+  	if (this.state.showClasses) {
+  		this.setState({
+  				itemClass: array[index],
+  				position: {},
+  				showClasses: false,
+  				showPositions: true
+  		})  		
+  	} else {
+  		this.setState({
+  				position: array[index],
+  				positionText: array[index].name,
+  				showPositions: false
+  		})
+  	}
+  }
+	componentDidMount() { 
+    $$.getJSON("./api/classes")
+    .then(data => this.setState({itemClasses: data, itemClass: data[0]}))
+    .catch(err => console.error(err))
+    $$.getJSON("./api/positions")
+    .then(data => this.setState({positions: data}))
+    .catch(err => console.error(err))
+	}
+	filteredPositions() {
+		let positions = this.state.positions
+		.filter(position => position.class_id === this.state.itemClass.id)
+		if (this.state.positionText) {
+			let search = this.state.positionText.toLowerCase()
+			positions = positions
+				.filter(position => 
+					position.name.toLowerCase().indexOf(search) !== -1)
+		}
+		return positions
+	}
+	render() {
+		let dropdownMenu = null
+		if (this.state.showClasses) dropdownMenu = this.state.itemClasses
+			.map(itemClass => (
+				<MenuItem 
+					eventKey={itemClass.id}
+					key={itemClass.id}>
+					{itemClass.name}
+				</MenuItem>
+		))
+		if (this.state.showPositions) dropdownMenu = this.filteredPositions()
+			.map(position => (
+				<MenuItem	
+					eventKey={position.position_id} 
+					key={position.position_id}> 
+					{position.name}
+				</MenuItem>
+		))
+		return (
+			<div className='position'>
+				<FormGroup>
+					<InputGroup>
+						<DropdownButton componentClass={InputGroup.Button}
+							id = 'item-class'
+							onSelect = {this.handleSelect}
+							title = {this.state.itemClass.name}
+							open = {this.state.showClasses || this.state.showPositions}
+							onClick = {this.handleClassesClick}
+						>
+							{dropdownMenu}
+						</DropdownButton>
+						<FormControl 
+							type="text"
+							value = {this.state.positionText}
+							onChange = { e => this.setState({positionText: e.target.value })}
+						/>
+						<InputGroup.Addon onClick={this.handlePositionsClick}>
+							<Glyphicon glyph="triangle-bottom" />
+						</InputGroup.Addon>
+					</InputGroup>
+				</FormGroup>
+			</div>
+		); 
+	} 
+} 
+ReactDOM.render(<InputRow />, document.getElementById('root'));
+</script>

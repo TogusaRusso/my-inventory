@@ -1,0 +1,42 @@
+$def with (result)
+  <html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='$app_path('/static/css/table.css')'>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+  <h1>Активное оборудование на сети без актов монтажа</h1>
+  <table border=1 class='status'>
+  <tr>
+  <td align=center width=30>Номер по поряд-ку</td>
+  <td align=center width=30>Склад / МОЛ</td>
+  <td align=center>Наименование</td>
+  <td align=center>Серийный номер</td>
+  <td align=center>IP</td>
+  <td align=center>Адрес</td>
+  </tr>
+  $ count = 0
+
+  $for r in result:
+	$ count += 1
+  	<tr>
+  		<td align=center>
+  			$count
+  		</td>
+  		<td>
+  			$r['person']
+  		</td>
+  		<td>
+  			$r['position'].name
+  		</td>
+  		<td align=center>
+  			$r['item'].serial
+  		</td>
+  		<td align=center>
+  			$r['switch'].ip
+  		</td>
+	    <td align=center>
+ 				$r['switch'].street, $r['switch'].house   
+	    </td>
+	  </tr>
+  </table>

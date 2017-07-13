@@ -1,0 +1,103 @@
+$def with (income, form = None, drop = False, remain = -1)
+	<style>
+	table, th, td {
+    	border: 1px solid black;
+    	border-collapse: collapse;
+  }
+  h2 {
+  	color: red;
+  }
+  </style>
+  <h3>$income.string1</h3>
+  <h3>$income.string2</h3>
+  $ em = error_message()
+  $if em <> '':
+    <h2>$em</h2>
+  
+  <table>
+  $ pos = positions_by_id()
+  $ itm_s = items_serials()
+  $ count = 1
+	    <th>
+      <td align=center>Код 1С / НФС</td>
+      <td align=center>Наименование</td>
+      <td align=center>Серийный №</td>
+      <td align=center>ед.изм.</td>
+      <td align=center>Количество</td>
+      <td align=center>Скан</td>
+    </th>
+  $for m in income.movements:
+    <tr>
+      <td>
+        $count
+        $ count +=1
+      </td>
+      <td>
+        $pos[m.position_id].code
+      </td>
+      <td>
+        $pos[m.position_id].name
+      </td>
+      <td>
+        $itm_s[m.item_id]
+      </td>
+      <td>
+        $pos[m.position_id].unit
+      </td>
+      <td>
+        $m.amount
+      </td>
+      <td align=center>
+      $if len(income.scan) > 0:
+          <a href="$app_path('/scans/')$income.scan" target="_blank">
+          <img border=0 alt="Списание" height="24" width="24" src=$app_path('/static/img/pdf.png')>
+          </a>
+      $else:
+          -
+      </td>
+
+      $if not income.saved:
+      	<td>
+      		<a href = $app_path('/movement/delete/')$m.movement_id>
+      			X
+      		</a>
+      	</td>
+    </tr>
+  $if not income.saved: 
+  	<tr>
+    	<form method="POST">
+    	<td>
+    	</td>
+    	<td>
+    	$if form.position.value <> None and form.position.value > 0:
+    		$pos[form.position.value].code
+    	</td>
+    	<td>
+      	$:form.position.render()
+      </td>
+      <td>
+        $if drop:
+        	$:form.item_drop.render()
+        	</br>
+      	$:form.item.render()
+      </td>
+      <td>
+      $if form.position.value <> None and form.position.value > 0:
+      	$pos[form.position.value].unit
+      </td>
+      <td>
+    		$:form.amount.render()
+      	$if remain > -1:
+      		до $remain
+    	</td>
+    	</tr>
+    	</table>
+  		$:form.save.render()
+  		</form>
+  		$if len(income.movements) == 0:
+  			<a href = $app_path('/documents/delete/')$income.document_id>
+  			Удалить пустой документ
+  			</a>
+  $else:
+    <a href="$app_path('/documents/akt/')$income.document_id" target="_blank">Распечатать документ</a>
+  <a href="$app_path('/documents/uploadscan/')$income.document_id/doc">Загрузить скан</a>

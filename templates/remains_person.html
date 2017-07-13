@@ -1,0 +1,43 @@
+$def with (remains, person_id)
+  <html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='$app_path('/static/css/table.css')'>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+  <h1>Остатки на $person_presentation(person_id)</h1>
+  <table border=1 class='status'>
+  <tr>
+  <td align=center width=30>Номер по поряд-ку</td>
+  <td align=center>Наименование, характеристика</td>
+  <td align=center>Серийный номер</td>
+  <td align=center>Количество</td>
+  <td align=center>Ед.Изм.</td>
+  </tr>
+  $ p_k = remains.keys()
+  $ p_k.sort(key = lambda p: p[0] + p[1])
+  $ count = 0
+
+  $for position in p_k:
+	$ count += 1
+  	<tr>
+  		<td align=center>
+  			$count
+  		</td>
+  		<td>
+  			$position[0]
+  		</td>
+  		<td align=center>
+  			$if position[1] <> '':
+  			    $position[1]
+			$else:
+			    -
+  		</td>
+  		<td align=center>
+        		$remains[position]
+		</td>
+	        <td align=center>
+  			$position[2]
+	      </td>
+	</tr>
+  </table>

@@ -1,0 +1,29 @@
+$def with (item, movements)
+	$ pos = positions_by_id()
+  <h1>Движения позиции $pos[item.position].name серийный № $item.serial</h1>
+  <table>
+  <th>
+  	<td>
+  		Документ
+  	</td>
+  	<td>
+  		Ссылка
+  	</td>
+  </th>
+  $for m in movements:
+  	<tr>
+  		<td>
+      </td>
+      <td>
+      	$document_string(m.document_id)
+      </td>
+      <td>
+      <a href='$app_path("/documents/view/")$m.document_id'>
+      $if not m.saved:
+      	Редактирование
+      $else:
+      	Просмотр
+			</a>
+			</td>
+		</tr>
+  </table>

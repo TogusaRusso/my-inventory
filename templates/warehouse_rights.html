@@ -1,0 +1,26 @@
+$def with (rights)
+  <h1>Права на доступ к складам</h1>
+  <a href="warehouse_rights/new">Новое правило</a>
+  <table>
+  $for r in rights:
+    <tr>
+      <td>
+        $r.user
+      </td>
+      <td>
+        $if r.get :
+          Имеет право выписывать со склада
+        $else:
+        	-
+      </td>
+      <td>
+      	$person_presentation(r.warehouse_id)
+      </td>
+      <td>
+      	<a href = $app_path('/warehouse_rights/delete/')$r.right_id>
+      		Удалить правило
+      	</a>
+      </td>
+    </tr>
+  </table>
+  

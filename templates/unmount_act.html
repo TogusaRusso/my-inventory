@@ -1,0 +1,215 @@
+$def with (d)
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Акт демонтажа nVision</title>
+<style type="text/css">
+    @page { size: landscape; margin-left: 1.59cm; margin-right: 1.5cm; margin-top: 1.5cm; margin-bottom: 1cm }
+    p { text-indent: 1.27cm; margin-bottom: 0cm; direction: ltr; text-align: justify; page-break-inside: avoid; orphans: 2; widows: 2 }
+    p.western { font-size: 12pt }
+    p.cjk { font-size: 12pt; so-language: en-US }
+    p.ctl { font-size: 12pt }
+    h1 { text-indent: 1.27cm; margin-bottom: 0.21cm; direction: ltr; text-align: center; page-break-inside: avoid; orphans: 0; widows: 0 }
+    h1.western { font-family: "Liberation Sans", sans-serif; font-size: 14pt }
+    h1.cjk { font-family: "Droid Sans Fallback"; font-size: 14pt; so-language: en-US }
+    h1.ctl { font-family: "FreeSans"; font-size: 14pt }
+    h4 { text-indent: 1.27cm; margin-top: 0.28cm; margin-bottom: 0.14cm; direction: ltr; text-align: left; page-break-inside: avoid; orphans: 0; widows: 0 }
+    h4.western { font-family: "Liberation Sans", sans-serif; font-size: 11pt }
+    h4.cjk { font-family: "Droid Sans Fallback"; font-size: 11pt; so-language: en-US }
+    h4.ctl { font-family: "FreeSans"; font-size: 11pt }
+    a:link { color: #0000ff }
+</style>
+</head>
+
+<body lang="ru-RU" link="#0000ff" dir="ltr">
+<table align="center">
+<tr>
+<td>
+<table width="100%">
+<tr><td align="center">
+<font style="font-size: 16pt"><b>АКТ №&nbsp;&nbsp;</b>$house_by_id(d.person_from).nfs</font>
+</td></tr>
+<tr><td>
+</tr></tr>
+<tr><td align="center">
+<b>демонтажа оборудования и материалов от $date_to_nice_string(current_datetime())</b>
+</tr></tr>
+<tr><td align="center">
+$house_by_id(d.person_from).nfs, $house_address(d.person_from) по проекту 11000118
+</tr></tr>
+<tr><td align="center">
+<font style="font-size: 10pt">(код объекта, наименование объекта)</font>
+</tr></tr>
+</table>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>Произведен демонтаж оборудования и материалов:</b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b> модернизация объекта</b>
+
+<table width="1092" cellpadding="1" cellspacing="0" align="center" border="1">
+<col width="51">
+<col width="101">
+<col width="227">
+<col width="36">
+<col width="37">
+<col width="146">
+<col width="87">
+<col width="104">
+<col width="86">
+<col width="92">
+<col width="101">
+<tr>
+
+<td width="51" height="32" align="center">
+<b>№ п.п.</b>
+</td>
+
+<td width="101" bgcolor="#ffffff" align="center">
+<b>Код НФС</b>
+</td>
+
+<td width="227" bgcolor="#ffffff" align="center">
+<b>Наименование оборудования и материалов (наименование, тип)</b>
+</td>
+
+<td width="36" bgcolor="#ffffff" align="center">
+<b>Кол-во</b>
+</td>
+
+<td width="37" bgcolor="#ffffff" align="center">
+<b>Ед. изм.</b>
+</td>
+
+<td width="146" bgcolor="#ffffff" align="center">
+<b>Серийный № (партия)</b>
+</td>
+
+<td width="87" bgcolor="#ffffff" align="center">
+<b>Бар-код</b>
+</td>
+
+<td width="104" bgcolor="#ffffff" align="center">
+<b>Примечания</b>
+</td>
+
+<td width="86" bgcolor="#ffffff" align="center">
+<b>№ точки</b>
+</td>
+
+<td width="92" bgcolor="#ffffff" align="center">
+<b>IP адрес</b>
+</td>
+
+<td width="101" bgcolor="#ffffff" align="center">
+<b>MAC-адрес</b>
+</td>
+</tr>
+
+$ pos = positions_by_id()
+$ itm_s = items_serials()
+$ count = 0
+$for m in d.movements:
+    $ count += 1 
+    $ switch =  switch_by_serial(itm_s[m.item_id])
+    <tr>
+    <td align="center">
+    $count
+    </td>
+    <td align="center">
+    $pos[m.position_id].code
+    </td>
+    <td align="center">
+    <font style="font-size: 8pt">$pos[m.position_id].full_name</font>
+    </td>
+    <td align="center">
+    $m.amount
+    </td>
+    <td align="center">
+    $if pos[m.position_id].unit <> '':
+        $pos[m.position_id].unit
+    $else:
+        шт.
+    </td>
+    <td align="center">
+    $if not m.item_id:
+	-
+    $else:
+	$itm_s[m.item_id]
+    </td>
+    <td align="center">
+    -
+    </td>
+    <td align="center">
+    $if switch:
+    	$if switch.medium_type == 'cooper':
+    		&nbsp;&nbsp;дополнительный&nbsp;&nbsp;
+    	$elif switch.medium_type == 'fiber':
+    		&nbsp;&nbsp;основной&nbsp;&nbsp;
+    	$else:
+    		-
+    $else:
+	-
+    </td>
+    <td align="center">
+    -
+    </td>
+    <td align="center">
+    <font style="font-size: 10pt">
+    	$if switch: 
+    		$switch.ip
+	$else:
+	    -
+    </font>
+    </td>
+    <td align="center">
+    <font style="font-size: 10pt">
+    	$if switch:
+    	    $switch.mac
+	$else:
+	    -
+    </font>
+    </td>
+    </tr>
+</table>
+<br>
+<br>
+
+
+<table align="center">
+
+<tr>
+<td align="left">От ЗАО «Энвижн Бизнес Салюшнс» $person_by_id(d.person_to).function</td>
+<td width="100"></td>
+<td align="left">$in_charge_by_id(d.person_to)</td>
+</tr>
+
+<tr>
+<td align="right"><font style="font-size: 8pt">(должность, Ф.И.О., подпись)</font></td>
+<td></td>
+<td></td>
+</tr>
+
+<tr>
+<td align="left">От ПАО «ВымпелКом» Волгоградского Филиала Начальник отдела эксплуатации сети ШПД</td>
+<td></td>
+<td>Седов К.И.</td>
+</tr>
+
+<tr>
+<td align="right"><font style="font-size: 8pt">(должность, Ф.И.О., подпись)</font></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
+
+</td>
+</tr>
+</table>
+</body>
+</html>

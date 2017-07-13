@@ -1,0 +1,68 @@
+$def with (incomes, months, month = None)
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='$app_path('/static/css/table.css')'>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+  <h1>Поступление ТМЦ
+  $if month <> None:
+  	за $month
+  </h1>
+  $if is_rights('admin', 'full', 'keeper'):
+  	<a href='income/new'>Оформить новое поступление ТМЦ</a><br><br>
+  $if month == None:
+  	20 последних документов</br></br>
+  <table border=1 class='status'>
+  <tr>
+  	<td align=center>Документ</td>
+  	<td align=center>Создал</td>
+  	<td align=center>Провел</td>
+  	<td align=center>Скан</td>
+  	<td align=center>Действие</td>
+  </tr>
+  $for document in incomes:
+    $if document.saved == 0:
+    	$if not is_rights('admin', 'full', 'keeper'):
+    		$continue
+    	$ class_status = 'statusEdit'
+    $else:
+    	$ class_status = 'statusView'
+    <tr>
+      <td class='$class_status'>
+        $doc)_to_string(document)
+      </td>
+      <td class='$class_status'>
+      	$user_name(document.creator)
+      </td>
+      <td class='$class_status'>
+      	$if document.saved:
+      		$user_name(document.signed_by)
+      </td>
+      <td class='$class_status' align = center>
+      	$if len(document.scan) > 0:
+      		<a href='$app_path("/scans/")$document.scan' target = "_blank">
+      		<img border=0 alt="Списание" height="24" width="24" src=$app_path('/static/img/pdf.png')>
+      		</a>
+      	$else:
+      		<a href="$app_path('/documents/uploadscan/')$document.document_id/income">
+      		<!--<a href="#nul" onclick="window.open('$app_path('/documents/uploadscan/')$document.document_id/income','','Toolbar=1,Location=0,Directories=0,Status=0,Menubar=0,Scrollbars=0,Resizable=0,Width=300,Height=200');">-->
+      		Загрузить
+      		</a>
+      </td>
+      <td class='$class_status'>
+        <a href='$app_path("/documents/view/")$document.document_id'>
+        $if document.saved == 0:
+        	Редактирование
+        $else:
+        	Просмотр
+        </a>
+      </td>
+    </tr>
+  </table>
+  </br>
+  Другие месяцы</br>
+  $for m in months:
+  	<a href = '$app_path('/incomes/' + m)'>$m</a>
+</body>
+</html>

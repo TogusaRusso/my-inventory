@@ -1,0 +1,45 @@
+$def with (people)
+  <h1>МОЛы и склады</h1>
+  <a href="people/newperson">Новый МОЛ</a>
+  <a href="people/newwarehouse">Новый склад</a>
+  <table>
+  $for person in people:
+  	$ color=''
+  	$if person.fired:
+  		$ color = "#e39191" 
+  	<tr bgcolor='$color'>
+    	<td>
+      	$person_presentation_name(person.person_id)
+      </td>
+      <td>
+        $if person.warehouse == 1:
+          Склад ($person_presentation(person.in_charge))
+        $else:
+        	$person.function
+      </td>
+      <td>
+      	<a href = $app_path('/remains/person/')$person.person_id>
+      		Остатки
+      	</a>
+      </td>
+      <td>
+      	<a href = $app_path('/people/fire/')$person.person_id>
+      		$if person.fired:
+      			Вернуть
+      		$else:
+      			Уволить
+      	</a>
+      </td>
+      <td>
+      	$if person.warehouse == 1:
+      		<a href = $app_path('/people/editwarehouse/')$person.person_id>
+      			Редактировать
+      		</a>
+        $else:
+      		<a href = $app_path('/people/editperson/')$person.person_id>
+      			Редактировать
+      		</a>
+      </td>
+    </tr>
+  </table>
+  

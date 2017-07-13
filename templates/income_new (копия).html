@@ -1,0 +1,19 @@
+$def with(form)
+
+
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='static/css/table.css'>
+</head>
+<body>
+
+<h1>Новое поступление</h1>
+<form method="POST">
+    $:form.render()
+</form>
+
+
+<a style='cursor:pointer;color:black;' onClick='window.history.back();'>Вернуться назад</a>
+
+</body>
+</html>

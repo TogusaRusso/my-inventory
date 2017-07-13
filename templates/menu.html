@@ -1,0 +1,53 @@
+$def with (name)
+<table width='100%'>
+<tr>
+<td width='auto'>
+<table border=0>
+<tr>
+$if is_rights('basic', 'full', 'admin', 'keeper'):
+    <td align=center>
+    <a href='income' $frame_target>
+    <img border=0 alt="Поступление" height="32" width="32" src=$app_path('/static/img/menu/income.png')><br>
+    Поступление</a>
+    </td>
+$if is_rights('basic', 'full', 'admin', 'keeper'):
+    <td align=center>
+    <a href='move' $frame_target>
+    <img border=0 alt="Перемещение" height="32" width="32" src=$app_path('/static/img/menu/move.png')><br>
+    Перемещение</a>
+    </td>
+$if is_rights('full', 'admin', 'keeper'):
+    <td align=center>
+    <a href='requests' $frame_target>
+    <img border=0 alt="Заявки" height="32" width="32" src=$app_path('/static/img/menu/move.png')><br>
+    Заявки</a>
+    </td>
+$if is_rights('admin', 'keeper'):
+    <td align=center>
+    <a href='mounts' $frame_target>
+    <img border=0 alt="Монтажи" height="32" width="32" src=$app_path('/static/img/menu/delete.png')><br>
+    Монтажи</a>
+    </td>
+$if is_rights('full', 'admin', 'keeper'):
+    <td align=center>
+    <a href='reports' $frame_target>
+    <img border=0 alt="Отчеты" height="32" width="32" src=$app_path('/static/img/menu/reports.png')><br>
+    Отчеты</a>
+    </td>
+$if is_rights('full', 'admin', 'keeper'):
+    <td align=center>
+    <a href='referens' $frame_target>
+    <img border=0 alt="Справочники" height="32" width="32" src=$app_path('/static/img/menu/referens.png')><br>
+    Справочники</a>
+    </td>
+</tr>
+</table>
+</td>
+<td>
+<table>
+<tr>
+<td align='right'>
+	<b>Вы авторизованы как:</b> $name
+</td>
+</tr>
+</table>

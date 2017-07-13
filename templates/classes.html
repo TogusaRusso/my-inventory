@@ -1,0 +1,19 @@
+$def with (classes)
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='/inventory/static/css/table.css'>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h1>Классификации ТМЦ</h1>
+<a href='classes/new'>Создать новый класс ТМЦ</a><br><br>
+
+<table border='1' class='status'>
+<tr><td align=center>Текущие классы</td></tr>
+$for c in classes:
+    <tr>
+    <td>$c.name</td>
+    </tr>
+</table>
+</body>
+</html>

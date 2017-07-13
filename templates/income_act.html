@@ -1,0 +1,159 @@
+$def with (d)
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='$app_path('/static/css/table.css')'>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<table align="center">
+<tr>
+<td>
+<table cellspacing="0" border="0" align="center" width="100%">
+<tr>
+<td align="center">
+АКТ № $d.document_id
+</td>
+</tr>
+
+<tr>
+<td align="center">
+<b>приема-передачи материальных ценностей</b>
+</td>
+</tr>
+
+<tr>
+<td align="center">
+</td>
+</tr>
+
+<tr>
+<td align="center">
+от $d.date
+</td>
+</tr>
+
+<tr>
+<td style="font-size: 8pt" align="center">
+число, месяц, год
+</td>
+</tr>
+</table>
+
+<table align=center>
+<tr>
+<td>
+<b>Представитель:</b>  $full_in_charge_by_id(d.person_from)
+</td>
+</tr>
+
+<tr>
+<td style="font-size: 8pt" align=center>
+(название обособленного подразделения, региона, филиала ЗАО &quot;ЭБС&quot;, сторонней организации, Ф.И.О)
+</td>
+</tr>
+
+<tr>
+<td>
+<b>и представитель:</b>  $full_in_charge_by_id(d.person_to)
+</td>
+</tr>
+
+<tr>
+<td style="font-size: 8pt" align=center>
+(название обособленного подразделения, региона, филиала ЗАО &quot;ЭБС&quot;, сторонней организации, Ф.И.О.)
+</td>
+</tr>
+
+<tr>
+<td>
+<b>составили настоящий акт о том, что первый передал, а второй принял следующие товарно-материальные ценности:</b>
+</td>
+</tr>
+</table>
+
+<table width="1000" align="center" border="1" class="status">
+<tr>
+<td width="5%" height="35" align="center" bgcolor="#CCFFCC"><b>№ п.п.</b></td>
+<td width="10%"align="center" bgcolor="#CCFFCC"><b>Код товара (маркировка)</b></td>
+<td width="35%" align="center" bgcolor="#CCFFCC"><b>Оборудование (наименование, тип)</b></td>
+<td width="5%" align="center" bgcolor="#CCFFCC"><b>Кол-во</b></td>
+<td width="5%" align="center" bgcolor="#CCFFCC"><b>Ед. изм.</b></td>
+<td width="10%" align="center" bgcolor="#CCFFCC"><b>Серийный №</b></td>
+<td width="13%" align="center" bgcolor="#CCFFCC"><b>Инвентарный №</b></td>
+<td width="12%" align="center" bgcolor="#CCFFCC"><b>Примечание</b></td>
+</tr>
+$ pos = positions_by_id()
+$ itm_s = items_serials()
+    $ count = 0
+    $for m in d.movements:
+        $ count += 1
+        <tr>
+        <td align="center">$count</td>
+        <td align="center">$pos[m.position_id].code</td>
+        <td align="center">$pos[m.position_id].full_name</td>
+        <td align="center">$m.amount</td>
+        <td align="center">
+        $if not pos[m.position_id].unit:
+            шт.
+        $else:
+            $pos[m.position_id].unit
+        </td>
+        <td align="center">$itm_s[m.item_id]</td>
+        <td align="center">-</td>
+        <td align="center">-</td>
+        </tr>
+</table>
+<br>
+<br>
+
+<table align="center" width="600">
+
+<tr>
+<td height="18"></td>
+<td align="left"><b>$in_charge_by_id(d.person_from)</b></td>
+</tr>
+
+<tr>
+<td height="21" align="left" style="border-top: 1px solid #3c3c3c"><u>Передал:</u>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font style="font-size: 8pt">
+подпись
+&nbsp;&nbsp;&nbsp;&nbsp;
+М.П.
+</font>
+</td>
+<td><font style="font-size: 8pt">(фамилия, инициалы)</font></td>
+</tr>
+
+<tr>
+<td height="21"></td>
+<td></td>
+</tr>
+
+<tr>
+<td height="18"></td>
+<td align="left"><b>$in_charge_by_id(d.person_to)</b></td>
+</tr>
+
+<tr>
+<td height="21" align="left" style="border-top: 1px solid #3c3c3c"><u>Получил:</u>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<font style="font-size: 8pt">
+подпись
+&nbsp;&nbsp;&nbsp;&nbsp;
+М.П.
+</font>
+</td>
+<td><font style="font-size: 8pt">(фамилия, инициалы)</font></td>
+</tr>
+
+<tr>
+<td height="21"></td>
+<td></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

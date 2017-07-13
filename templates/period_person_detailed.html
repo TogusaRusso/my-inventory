@@ -1,0 +1,84 @@
+$def with (period, person, start, end)
+  <html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='static/css/table.css'>
+  </head>
+  <body>
+  $if start == '' and end == '':
+	$ result = u'за весь период'
+  $elif start == '' and end <> '':
+	$ result = u'c самого начала по ' + end
+  $elif start <> '' and end == '':
+	$ result = u'c ' + start + u' по сегодняшний день'
+  $else:
+	$ result = u'c ' + start + u' по ' + end
+
+  <h2>Движения ТМЦ по складу(МОЛу): "$person" $result</h2>
+  <table border=1 class='status'>
+  <tr>
+  	<td align='center'>
+  		Позиция
+  	</td>
+  	<td align='center'>
+  		Серийный №
+  	</td>
+  	<td align='center'>
+  		ед.изм.
+  	</td>
+	<td align='center'>
+  		Поступление
+  	</td>
+  	<td align='center'>
+  		Выдача
+  	</td>
+  	<td align='center'>
+  		Сальдо
+  	</td>
+  </tr>
+  $ p_k = period.keys()
+  $ p_k.sort(key = lambda p: p[0] + p[1]) 
+  $for position in p_k:
+	<tr>
+        <td>
+	<font size='3'>
+        	$position[0]
+        </font>
+	</td>
+        <td>
+	<font size='3'>
+        	$position[1]
+        </font>
+        </td>
+        <td>
+	<font size='3'>
+        	$position[2]
+        </font>
+        </td>
+        <td>
+	<font size='3'>
+        	$period[position][0]
+        </font>
+        </td>
+        <td>
+	<font size='3'>
+        	$period[position][1]
+        </td>
+        </font>
+        <td>
+	<font size='3'>
+        	$(period[position][0] - period[position][1])
+        </font>
+        </td>
+	</tr>
+	$ movements = list(period[position][2])
+	$ movements.sort()
+	$for m in movements:
+	    <tr><td colspan='6' class='statusEdit'><font size='2'>
+	    	<a href = "$app_path('/documents/view/')$m" target='_blank'>
+	    		<i>$document_string(m)</i>
+	    	</a></font>
+	    </td></tr>        
+  </table>
+
+  </body>
+  </html>

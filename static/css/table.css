@@ -1,0 +1,4 @@
+.status { border: 1px solid black; border-collapse: collapse; }
+.statusView { background-color: #ffffff; }
+.statusEdit { background-color: #fdf775; }
+body{ font:Arial,Helvetica,sans-serif; }

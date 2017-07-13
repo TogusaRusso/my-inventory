@@ -1,0 +1,34 @@
+$def with (result)
+  <html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='static/css/table.css'>
+  </head>
+  <body>
+
+  <h2>Отчет по амортизации</h2>
+  <table border=1 class='status'>
+  <tr>
+  	<td align='center'>
+  		Позиция
+  	</td>
+  	<td align='center'>
+  		Серийный №
+  	</td>
+  	<td align='center'>
+  		Выдано, дней назад
+  	</td>
+  </tr>
+  $ previous = ''
+  $for r in result:
+  	$if previous <> r.name + ' ' + r.first_name:
+  		$ previous = r.name + ' ' + r.first_name
+  		<tr><td colspan=5><b>$previous</b></td></tr>
+  	<tr>
+  		<td><font size='3'>$r.pos_name</font></td>
+  		<td><font size='3'>$r.serial</font></td>
+  		<td><font size='3'>$r.offset</font></td>
+  	</tr>
+  </table>
+
+  </body>
+  </html>

@@ -1,0 +1,107 @@
+$def with (income, form = None, drop = False, remain = -1)
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='/inventory/static/css/table.css'>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+<h3>$income.string1</h3>
+<h3>$income.string2</h3>
+$ em = error_message()
+$if em <> '':
+    <h2>$em</h2>
+
+$if len(income.movements) == 0:
+    <a href = $app_path('/documents/delete/')$income.document_id>
+    Удалить пустой документ
+    </a><br><br>
+$elif income.saved:
+	$if is_request(income):
+		<a href="$app_path('/genmove/')$income.document_id">Создать акт перемещения</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    $if is_mount(income):
+    	<a href="$app_path('/documents/aktmount/')$income.document_id" target="_blank">Распечатать акт монтажа</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    $elif is_unmount(income):
+    	<a href="$app_path('/documents/aktmount/')$income.document_id" target="_blank">Распечатать акт демонтажа</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    $else:
+    	<a href="$app_path('/documents/akt/')$income.document_id" target="_blank">Распечатать документ</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="$app_path('/documents/uploadscan/')$income.document_id/doc">Загрузить скан</a><br><br>
+<table border='1' class='status'>
+$ pos = positions_by_id()
+$ itm_s = items_serials()
+$ count = 1
+    <tr>
+    <td align=center width=30>№ П/П</td>
+    <td align=center>Код 1С / НФС</td>
+    <td align=center>Наименование</td>
+    $if not is_request(income):
+    	<td align=center>Серийный №</td>
+    <td align=center>ед.изм.</td>
+    <td align=center>Количество</td>
+    </tr>
+<!-- Вывод существующих строк в документе-->
+$for m in income.movements:
+    <tr>
+    <td align=center>
+    $count
+    $ count +=1
+    </td>
+    <td>
+    $pos[m.position_id].code
+    </td>
+    <td>
+    $pos[m.position_id].name
+    </td>
+    $if not is_request(income):
+    	<td>
+    	$if itm_s[m.item_id] <> '':
+      	  $itm_s[m.item_id]
+      </td>
+    <td align=center>
+    $if pos[m.position_id].unit <> '':
+        $pos[m.position_id].unit
+    $else:
+        шт.
+    </td>
+    <td align=center>
+    $m.amount
+    </td>
+    $if not income.saved:
+	<td>
+	<a href = $app_path('/movement/delete/')$m.movement_id>X</a>
+	</td>
+    </tr>
+$if not income.saved:
+    <!-- Вывод новой строки в документе, если он не сохранен-->
+    <form method="POST">
+    <tr>
+    <td></td>
+    <td>
+    $if form.position.value <> None and form.position.value > 0:
+    	$pos[form.position.value].code
+    </td>
+    <td>$:form.position.render()</td>
+    $if not is_request(income):
+    	<td>
+    	$if drop:
+    		$:form.item_drop.render()</br>
+    	$:form.item.render()
+    	</td>
+    <td align=center>
+    $if form.position.value <> None and form.position.value > 0:
+    	$pos[form.position.value].unit
+    </td>
+    <td>
+    $:form.amount.render()
+	$if remain > -1:
+		до $remain
+    </td>
+    </tr>
+</table>
+$if not income.saved:
+    <!-- Вывод кнопки Провести-->
+    <br>
+    $:form.save.render()
+    </form>
+
+</body>
+</html>

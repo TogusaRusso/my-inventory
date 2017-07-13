@@ -1,0 +1,69 @@
+$def with (period, start, end)
+
+  <html>
+  <head>
+  <link rel='stylesheet' type='text/css' href='static/css/table.css'>
+  </head>
+  <body>
+  <h1>Движения с $start по $end</h1>
+  <table class='status'>
+  <tr>
+  	<td>
+  		МОЛ или склад
+  	</td>
+  	<td>
+  		Позиция
+  	</td>
+  	<td>
+  		Серийный №
+  	</td>
+  	<td>
+  		ед.изм.
+  	</td>
+    <td>
+  		Получил
+  	</td>
+  	<td>
+  		Выдал
+  	</td>
+  	<td>
+  		Итого
+  	</td>
+  </tr>
+  $ per_k = period.keys()
+  $ per_k.sort()
+  $for person in per_k:
+  	$ p_k = period[person].keys()
+  	$ p_k.sort(key = lambda p: p[0] + p[1])
+  	$for position in p_k:
+    	<tr>
+      	<td>
+        </td>
+      	<td>
+        	$person
+        </td>
+        <td>
+        	$position[0]
+        </td>
+        <td>
+        	$position[1]
+        </td>
+        <td>
+        	$position[2]
+        </td>
+        <td>
+        	$period[person][position][0]
+        </td>
+        <td>
+        	$period[person][position][1]
+        </td>
+        <td>
+        	$(period[person][position][0] - period[person][position][1])
+        </td></tr>
+        $ movements = list(period[person][position][2])
+        $ movements.sort()
+        $for m in movements:
+        	<tr><td colspan='7'><i>-$m</i></td></tr>
+  </table>
+  </body>
+  </html>

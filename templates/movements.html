@@ -1,0 +1,22 @@
+$def with (movements)
+  <h1>Проводки</h1>
+  <table>
+  $for move in movements:
+    <tr>
+      <td>
+        $move['document']
+      </td>
+      <td>
+        $move['position']
+      </td>
+      <td>
+        $move['serial']
+      </td>
+      <td>
+        $move['amount']
+      </td>
+    </tr>
+    </br>
+  </table>
+  <a href='movements/new'>Новая</a>
+ 

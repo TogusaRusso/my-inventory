@@ -1,0 +1,58 @@
+$def with (deletes, months, month = None)
+<html>
+<head>
+<link rel='stylesheet' type='text/css' href='static/css/table.css'>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+</head>
+<body>
+ <h1>Списания 
+  $if month <> None:
+  	в $month
+  </h1>
+  $if is_rights('full', 'admin', 'keeper'):
+  	<a href='delete/new'>Новый</a>
+  <table border=1 class='status'>
+  <tr>
+  	<td align=center>Документ</td>
+  	<td align=center>Создал</td>
+  	<td align=center>Провел</td>
+  	<td align=center>Скан</td>
+  	<td align=center>Действие</td>
+  </tr>
+  $for document in deletes:
+    <tr>
+      <td>
+        $doc_to_string(document)
+      </td>
+      <td>
+      	$user_name(document.creator)
+      </td>
+      <td>
+      	$if document.saved:
+      		$user_name(document.signed_by)
+      </td>
+      <td align = center>
+      $if len(document.scan) > 0:
+      	<a href='$app_path("/scans/")$document.scan' target = "_blank">
+      	<img border=0 alt="Списание" height="24" width="24" src=$app_path('/static/img/pdf.png')>
+      	</a>
+      $else:
+      	<a href="$app_path('/documents/uploadscan/')$document.document_id/income">
+      	<!--<a href="#nul" onclick="window.open('$app_path('/documents/uploadscan/')$document.document_id/income','','Toolbar=1,Location=0,Directories=0,Status=0,Menubar=0,Scrollbars=0,Resizable=0,Width=300,Height=200');">-->
+      	Загрузить
+      	</a>
+      </td>
+      <td>
+        <a href='$app_path("/documents/view/")$document.document_id'>
+        $if document.saved == 0:
+        	Редактирование
+        $else:
+        	Просмотр
+        </a>
+      </td>
+    </tr>
+  </table>
+  $for m in months:
+  	<a href = '$app_path("/deletes/" + m)'>$m</a> 
+</body>
+</html>

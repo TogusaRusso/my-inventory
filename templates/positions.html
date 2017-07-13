@@ -1,0 +1,27 @@
+$def with (positions)
+  <h1>Наименования</h1>
+  <table>
+  	$ positions.sort(key = lambda p: p.c.name + p.name)
+    $for pos in positions:
+      <tr>
+        <td>$pos.c.name</td>
+        <td>$pos.name</td>
+        <td>$pos.code</td>
+        <td>
+          $if pos.serial:
+            <p>* CЕРИЙНАЯ *</p>
+          $else:
+            $pos.unit
+        </td>
+        <td>
+        	<a href="$app_path('/positions/edit/')$pos.position_id">
+        		$if pos.inactive:
+        			Неактивна
+        		$else:
+        			Редактировать
+        	</a>
+        </td>
+        <td>$pos.full_name</td>
+      </tr>
+  </table>
+  <a href="$app_path('/positions/new')">Новая</a>
