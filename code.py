@@ -55,7 +55,6 @@ urls = (
   '/income/new', 'income_new',
   '/income', 'income',
   '/incomes/(.*)', 'income',
-  #'/documents/view/(.*)/(.*)', 'document_view',
   '/documents/view/(.*)', 'document_view',
   '/documents/save/(.*)', 'document_save',
   '/documents/akt/(.*)', 'document_akt',
@@ -89,10 +88,6 @@ urls = (
   '/mountfake', 'mount_fake',
   '/mountfake/new', 'mount_fake_new',
   '/mountfake/(.*)', 'mount_fake',
-  #'/documents', 'documents',
-  #'/documents/new', 'documents_new',
-  #'/movements', 'movements',
-  #'/movements/new', 'movements_new',
   '/reports', 'reports',
   '/remains', 'remains',
   '/mounts', 'mounts',
@@ -274,30 +269,6 @@ def remains_on_person_1(on_person, current_doc_id = -1):
 		"HAVING amount > 0 " +
 		"ORDER BY name, serial"
 		)
-	#for m in movements:
-	#	if m.person_from != 0	and (on_person == 0 or on_person == m.person_from):
-	#		person_from = m.person_from
-	#		person = h.get(person_from, {})
-	#		current = person.get((m.position_id, m.item_id), 0)
-	#		person[(m.position_id, m.item_id)] = current - m.amount
-	#		h[person_from] = person
-	#	if m.person_to != 0	and (on_person == 0 or on_person == m.person_to):
-	#		person_to = m.person_to
-	#		person = h.get(person_to, {})
-	#		current = person.get((m.position_id, m.item_id), 0)
-	#		person[(m.position_id, m.item_id)] = current + m.amount
-	#		h[person_to] = person
-	#hclear = {}
-	#for p in h.keys():
-	#	pclear = {}
-	#	for i in h[p].keys():
-	#		if int(h[p][i]) > 0:
-	#			pclear[i] = int(h[p][i])
-	#	if len(pclear) > 0:
-	#		hclear[p] = pclear
-	#return hclear
-
-
 	
 def remains_on_person(person_id):
 	logging.info(remains_all(person = person_id).get(int(person_id), {}))
@@ -655,8 +626,6 @@ def people_all(include_fired = False):
 	people = list(db.select('people'))
 	people = [p for p in people 
 		if p.person_id != NET_WAREHOUSE and (not p.fired or include_fired)]
-	#for i in range(len(people)):
-		#people[i]['presentation'] = person_presentation(people[i])
 	return people
 
 def people_list(what = 'all'):
@@ -1711,28 +1680,21 @@ class unmount:
 
 def is_income(doc):
 	return doc.document_type == INCOME
-	#return int(doc.person_from) == 0 and int(doc.person_to) != NET_WAREHOUSE
 
 def is_delete(doc):
 	return doc.document_type == DELETE
-	#return int(doc.person_to) == 0
 
 def is_mount(doc):
 	return doc.document_type == MOUNT
-	#return int(doc.person_to) == NET_WAREHOUSE and int(doc.person_from) > 0
 
 def is_mount_fake(doc):
 	return doc.document_type == MOUNTFAKE
-	#return int(doc.person_to) == NET_WAREHOUSE and int(doc.person_from) == 0
 
 def is_unmount(doc):
 	return doc.document_type == UNMOUNT 
-	#return int(doc.person_from) == NET_WAREHOUSE
 
 def is_move(doc):
 	return doc.document_type == MOVE
-	#return (not is_income(doc) and not is_delete(doc) 
-	#	and not is_mount(doc) and not is_unmount(doc) and not is_mount_fake(doc))
 
 def is_request(doc):
 	return doc.document_type == REQUEST
@@ -2178,8 +2140,6 @@ class unmount_new:
 		streets = [(0,'')]
 		streets += [(s.street_id, s.street_name) for s 
 			in streets_unempty_by_city(self.city)]
-		#streets += [(s.street_id, s.street_name) for s 
-		#	in streets_mounted_by_city(self.city)]
 		streets.sort(key = lambda p: p[1])
 		f.street.args = streets
 		f.street.value = self.street
@@ -2187,12 +2147,8 @@ class unmount_new:
 		houses = [(0,'')] 
 		houses += [(h.house_id, h.house_name) for h 
 			in houses_by_street(self.street)]
-		#houses += [(h.house_id, h.house_name) for h 
-		#	in houses_mounted_by_street(self.street)]
-		#houses.sort(key = lambda p: int(p[1]))
 		f.house.args = houses
 		f.house.value = self.house
-		#logging.info(self.city)
 		return render.unmount_new(f)
 	def GET(self):
 		check_rights('admin', 'full', 'keeper')
@@ -2200,7 +2156,6 @@ class unmount_new:
 		self.city = 6
 		self.street = 0
 		self.house = 0
-		#logging.info(self.city)
 		return self.show_form()
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2223,7 +2178,6 @@ class unmount_new:
 		if int(f.d.current_street) != self.street:
 			self.house = 0
 			return self.show_form()
-		#logging.info(f.d.house)
 		if f.d.save != u'save':
 			return self.show_form()
 		if self.person_to == 0:
@@ -2275,17 +2229,14 @@ class remains_by_address:
 		houses = [(0,'')] 
 		houses += [(h.house_id, h.house_name) for h 
 			in houses_mounted_by_street(self.street)]
-		#houses.sort(key = lambda p: int(p[1]))
 		f.house.args = houses
 		f.house.value = self.house
-		#logging.info(self.city)
 		return render.remains_by_address_form(f)
 	def GET(self):
 		check_rights('admin', 'full', 'keeper')
 		self.city = 6
 		self.street = 0
 		self.house = 0
-		#logging.info(self.city)
 		return self.show_form()
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2304,7 +2255,6 @@ class remains_by_address:
 		if int(f.d.current_street) != self.street:
 			self.house = 0
 			return self.show_form()
-		#logging.info(f.d.house)
 		if f.d.save != u'save':
 			return self.show_form()
 		remains = remains_on_person_names(self.house)
@@ -2312,35 +2262,15 @@ class remains_by_address:
 		
 class item_movements:
 	item_form = form.Form(
-		#form.Dropdown('position_id', args = [], description = u'Наименование', 
-		#	onchange="this.form.submit()"),
-		#form.Hidden('position_current', args = [], description = u'Наименование'),
-		#form.Dropdown('item_id', args = [], description = u'Серийник'),
 		form.Textbox('item', description = " ", onchange="this.form.submit()"),
 		form.Button('save', value = 'save', html = u'Далее')
 	)
 	def show_form(self):
 		f = self.item_form()
-		#positions = [(0, '')]
-		#positions += [(p.position_id, p.name) for p in positions_all() if p.serial]
-		#positions.sort(key = lambda p: p[1])
-		#f.position_id.args = positions
-		#f.position_id.value = self.position_id
-		#f.position_current.value = self.position_id
-		#items = [(0, '')]
-		#items += [(i.items_id, i.serial) for i in 
-		#	items_by_position(self.position_id)]
-		#items.sort(key = lambda i: i[1])
-		#f.item_id.args = items
-		#f.item_id.value = self.item_id
 		f.item.value = ''
-		#if self.item_id != 0:
-			#f.item.value = item_by_id(self.item_id).serial
 		return render.item_movements_form(f)
 	def GET(self):
 		check_rights('admin', 'full', 'keeper')
-		#self.position_id = 0
-		#self.item_id = 0
 		return self.show_form()
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2349,15 +2279,6 @@ class item_movements:
 		if not f.validates():
 			ERROR_MESSAGE = u'Инвалид!'
 			return self.show_form()
-		#self.position_id = int(f.d.position_id)
-		#self.item_id = int(f.d.item_id)
-		#if int(f.d.position_current) != self.position_id:
-		#	self.item_id = 0
-		#	return self.show_form()
-		#if self.item_id == 0 and f.d.item == '':
-		#	return self.show_form()
-		#if f.d.save != u'save' and f.d.item == '':
-		#	return self.show_form()
 		if f.d.item != '':
 			self.item_id =  item_by_serial(f.d.item)
 			if not self.item_id:
@@ -2378,7 +2299,6 @@ class remains_by_person:
 		check_rights()
 		f = self.person_form()
 		f.person_from.args = people_user_can_get_from(user()) 
-		#people_list()
 		return render.remains_on_person_form(f)
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2401,7 +2321,6 @@ class remains_by_positions_on_person:
 		check_rights()
 		f = self.person_form()
 		f.person_from.args = people_user_can_get_from(user())
-		#people_list()
 		return render.remains_by_positions_on_person_form(f)
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2427,7 +2346,6 @@ class period:
 		people = people_all()
 		f = self.period_form()
 		f.person.args = people_user_can_get_from(user())
-		#people_list()
 		return render.period_enter(f)
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2455,7 +2373,6 @@ class period_detailed:
 		check_rights()
 		f = self.period_form()
 		f.person.args = people_user_can_get_from(user())
-		#people_list()
 		return render.period_enter(f)
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2485,7 +2402,6 @@ class release_by_period:
 		people = people_all()
 		f = self.period_form()
 		f.person.args = people_user_can_get_from(user())
-		#people_list()
 		return render.period_enter(f)
 	def POST(self):
 		global ERROR_MESSAGE
@@ -2514,7 +2430,6 @@ class release_by_period:
 			"ORDER BY person_to, name, serial" 
 		)
 		query = query.format(MOVE, f.d.person, f.d.start, f.d.end)
-		#logging.info(query)
 		csv_file = StringIO()
 		csv_writer = csv.writer(csv_file)
 		csv_writer.writerow(
@@ -2839,7 +2754,6 @@ class document_view:
 	def GET(self, doc_id, c = 'all'):
 		check_rights() 
 		doc = self.document_by_id(doc_id)
-		#movements = self.movements_by_document_id(doc_id)
 		if doc.saved:
 			return render.document_view(doc)
 		else:
@@ -2960,18 +2874,10 @@ class document_save:
 			for m in doc.movements:
 				m_sum[(m.position_id, m.item_id)] = m_sum.get(
 					(m.position_id, m.item_id), 0) + m.amount
-			#logging.info(r)				
-			#logging.info(m_sum)
 			for mk, mv in m_sum.items():
 				if mv > r.get(mk, 0):
 					what = position_by_id(mk[0]).name
-					#if mk[1] <> None:
-						#what += u' (' +  item_by_id(mk[1]).serial + u')'
 					ERROR_MESSAGE = "Слишком много хотите" 
-					  #(u'По документу нужно ' +	str(mv)  
-						#+ u' ' + what
-						#+ u' есть только ' + str(r.get(mk, 0)))
-					#logging.info(ERROR_MESSAGE)
 					return dv.GET(doc_id)
 		w = "document_id = " + str(doc_id)
 		db.update('documents', where = w, 
