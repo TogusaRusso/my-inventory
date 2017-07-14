@@ -42,6 +42,7 @@ urls = (
   '/positions/edit/(.*)', 'positions_edit',
   '/classes', 'classes',
   '/classes/new', 'classes_new',
+  '/roles', 'roles',
   '/items', 'items',
   '/items/new', 'items_new',
   '/people', 'people',
@@ -169,6 +170,8 @@ def positions_by_id():
 	
 def classes_all():
 	return list(db.select('classes'))
+
+
 
 def classes_all_id():
 	r = [int(p.id) for p in db.select('classes', what = 'id')]
@@ -925,6 +928,30 @@ def check_rights(*rlist):
 		raise web.seeother('/denied')
 	if rights <> "basic" and rights <> "full" and	rights <> "admin" and rights <>"keeper":
 		raise web.seeother('/denied')
+		
+def action(current_action):
+	if not check_action(current_action):
+		raise web.seeother('/denied')
+		
+def check_action(action):
+	current_user = user()
+	w = "login = '" + str(current_user) +"'"
+	users = db.select('users', where = w)
+	if len(users) > 0:
+		role = users[0].role
+	else:
+		role = 'guest'
+		db.insert('users', login = current_user, role = role)
+	actions = db.select('actions', where = "action = '" + str(action) + "'")
+	if len(actions) == 0:
+		db.insert('actions', action = action)
+	if role == 'admin':
+		return True
+	w = 'role = ' + str(role) + ' AND action = ' + str(action)
+	rights = db.select('role_rights', where = w)
+	return len(rights) > 0 
+		
+
 
 def is_rights(*rights):
 	role = user_rights(user())
@@ -954,12 +981,12 @@ class InputDate(form.Input):
 
 class denied:
 	def GET(self):
-#		check_rights()
 		return render.denied()
 
 class index:
 	def GET(self):
 		check_rights()
+		#action('Заходить в складскую программу')
 		i = web.input(name=None)
 		return render.index(i.name)
 
@@ -1047,6 +1074,30 @@ class classes:
 	def GET(self):
 		check_rights()
 		return render.classes(classes_all())
+
+class roles:
+	class_form = form.Form(
+		form.Textbox('role'),
+	)
+	def GET(self):
+		check_rights()
+		return render.roles(list(db.select('roles')))
+	def POST(self):
+		check_rights()
+		f = self.class_form()
+		if f.validates() and f.d.role <> '':
+			db.insert('roles', role = f.d.role)
+		return self.GET()
+		
+		
+		#if not 
+		#	return render.class_new(f)
+		#if f.d.name == '':
+		#	return render.class_new(f)
+		#db.insert('classes', name = f.d.name)
+		#return render.classes(classes_all())
+
+
 
 
 class positions_new:
@@ -2990,8 +3041,6 @@ db_switches = web.database(
 web.config.debug = True
 
 app = web.application(urls, globals())
-
-logging.error(enviroment.db['host'])
 
 if __name__ == "__main__": 
     app.run()        
