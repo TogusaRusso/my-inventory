@@ -1,0 +1,63 @@
+$def with (roles_rights, roles, actions)
+  <html>
+  <head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+  </head>
+  <body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+  <h3>Возможности пользователей по ролям</h3>
+  <form method='POST'>
+  <div class='row'>
+  <div class="input-field col s3">
+    <select id="role_id" name="role_id">
+      <option value="" disabled selected>Выберите роль</option>
+      $for r in roles:
+      	<option value="$r.id">$r.role</option>
+    </select>
+    <label>Роли пользователей</label>
+  </div>
+  <div class="input-field col s8">
+    <select id="action_id" name="action_id">
+      <option value="" disabled selected>Выберите действие</option>
+      $for a in actions:
+      	<option value="$a.id">$a.action</option>
+    </select>
+    <label>Действия</label>
+  </div>
+  <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+  	<i class="material-icons">add</i>
+  </button>
+  </div>
+  </form>
+  <ul class="collapsible" data-collapsible="accordion">
+  $ previous = 0
+  $for rr in roles_rights:
+  	$if previous <> rr.role_id:
+  		$if previous <> 0 :
+  			</table></div></li>
+  		$ previous = rr.role_id
+  		$ role = [r.role for r in roles if previous == r.id][0]
+  		<li><div class="collapsible-header">$role</div>
+  		<div class="collapsible-body">
+  		<table class='striped'>
+  	<tr>
+  		$ action = [a.action for a in actions if rr.action_id == a.id][0]
+  		<td>$action</td>
+  		<td>
+  			<a href = $app_path('/role_right/delete/')$rr.id>
+  				<i class='material-icons'>delete_forever</i>
+  			</a>
+  		</td>
+  	</tr>
+  </table></ul>
+  <script>
+  	$$(document).ready(function(){
+  			$$('.collapsible').collapsible();
+  			$$('select').material_select();
+  	});
+  </script>
+  </body>
+  </html>

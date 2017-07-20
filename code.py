@@ -43,6 +43,8 @@ urls = (
   '/classes', 'classes',
   '/classes/new', 'classes_new',
   '/roles', 'roles',
+  '/roles_rights', 'roles_rights',
+  '/role_right/delete/(.*)', 'role_right_delete',
   '/items', 'items',
   '/items/new', 'items_new',
   '/people', 'people',
@@ -938,16 +940,19 @@ def check_action(action):
 	w = "login = '" + str(current_user) +"'"
 	users = db.select('users', where = w)
 	if len(users) > 0:
-		role = users[0].role
+		role_id = users[0].role_id
 	else:
-		role = 'guest'
-		db.insert('users', login = current_user, role = role)
+		role_id = 2 # guest
+		db.insert('users', login = current_user, role_id = role_id)
 	actions = db.select('actions', where = "action = '" + str(action) + "'")
 	if len(actions) == 0:
-		db.insert('actions', action = action)
-	if role == 'admin':
+		action_id = db.insert('actions', action = action).id
+	else:
+		action_id = actions[0].id
+	if role_id == 1: # admin
 		return True
-	w = 'role = ' + str(role) + ' AND action = ' + str(action)
+	w = ('role_id = ' + str(role_id) + 
+		  ' AND action_id = ' + str(action_id))
 	rights = db.select('role_rights', where = w)
 	return len(rights) > 0 
 		
@@ -1086,19 +1091,44 @@ class roles:
 		check_rights()
 		f = self.class_form()
 		if f.validates() and f.d.role <> '':
-			db.insert('roles', role = f.d.role)
+			w = "role='" + f.d.role + "'"
+			if len(db.select('roles', where=w)) == 0:
+				db.insert('roles', role = f.d.role)
+		return self.GET()
+
+class roles_rights:
+	class_form = form.Form(
+		form.Dropdown('role_id', args = []),
+		form.Dropdown('action_id', args = [])
+	)
+	def GET(self):
+		check_rights()
+		roles = filter(lambda r: r.role <> 'admin',
+			list(db.select('roles')))
+		actions = list(db.select('actions'))
+		roles_rights = list(db.select('roles_rights'))
+		roles_rights.sort(key = lambda r: r.role_id)
+		return render.roles_rights(roles_rights, roles, actions)
+	def POST(self):
+		check_rights()
+		f = self.class_form()
+		if f.validates() and f.d.role_id > 0 and f.d.action_id > 0:
+			w = 'role_id='+ f.d.role_id + ' AND action_id=' + f.d.action_id
+			if len(db.select('roles_rights', where=w)) == 0:
+				db.insert(
+					'roles_rights', 
+					role_id = f.d.role_id,
+					action_id = f.d.action_id
+					)
 		return self.GET()
 		
+class role_right_delete:
+	def GET(self, rr_id):
+		check_rights()
+		w = 'id = ' + str(rr_id)
+		db.delete('roles_rights', where = w)
+		raise web.seeother('/roles_rights')
 		
-		#if not 
-		#	return render.class_new(f)
-		#if f.d.name == '':
-		#	return render.class_new(f)
-		#db.insert('classes', name = f.d.name)
-		#return render.classes(classes_all())
-
-
-
 
 class positions_new:
 	position_form = form.Form(
@@ -3044,5 +3074,3 @@ app = web.application(urls, globals())
 
 if __name__ == "__main__": 
     app.run()        
-
-
