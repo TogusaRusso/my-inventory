@@ -45,6 +45,7 @@ urls = (
   '/roles', 'roles',
   '/roles_rights', 'roles_rights',
   '/role_right/delete/(.*)', 'role_right_delete',
+  '/users_rights', 'users_rights',
   '/items', 'items',
   '/items/new', 'items_new',
   '/people', 'people',
@@ -937,6 +938,8 @@ def action(current_action):
 		
 def check_action(action):
 	current_user = user()
+	if current_user == None: 
+		return False
 	w = "login = '" + str(current_user) +"'"
 	users = db.select('users', where = w)
 	if len(users) > 0:
@@ -953,7 +956,7 @@ def check_action(action):
 		return True
 	w = ('role_id = ' + str(role_id) + 
 		  ' AND action_id = ' + str(action_id))
-	rights = db.select('role_rights', where = w)
+	rights = db.select('roles_rights', where = w)
 	return len(rights) > 0 
 		
 
@@ -991,7 +994,7 @@ class denied:
 class index:
 	def GET(self):
 		check_rights()
-		#action('Заходить в складскую программу')
+		action('Заходить в складскую программу')
 		i = web.input(name=None)
 		return render.index(i.name)
 
@@ -1128,7 +1131,27 @@ class role_right_delete:
 		w = 'id = ' + str(rr_id)
 		db.delete('roles_rights', where = w)
 		raise web.seeother('/roles_rights')
-		
+
+class users_rights:
+	class_form = form.Form(
+		form.Dropdown('login', args = []),
+		form.Dropdown('role_id', args = [])
+	)
+	def GET(self):
+		check_rights()
+		users = list(db.select('users'))
+		roles = list(db.select('roles'))
+		users.sort(key = lambda u: u.login)
+		roles.sort(key = lambda r: r.role)
+		return render.users_rights(users, roles)
+	def POST(self):
+		check_rights()
+		f = self.class_form()
+		if f.validates() and f.d.login <> None and f.d.role_id > 0:
+			w = "login='"+ f.d.login + "'"
+			db.update('users', where=w, role_id = f.d.role_id) 
+		return self.GET()
+
 
 class positions_new:
 	position_form = form.Form(
@@ -3028,6 +3051,7 @@ template_globals = {
     'in_charge_by_id': in_charge_by_id,
     'full_in_charge_by_id': full_in_charge_by_id,
     'is_rights': is_rights,
+    'check_action': check_action,
     'is_mount': is_mount,
     'is_unmount': is_unmount,
     'is_request': is_request,

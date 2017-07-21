@@ -1,0 +1,57 @@
+$def with (users, roles)
+  <html>
+  <head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+  </head>
+  <body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+  <h3>Роли пользователей</h3>
+  <form method='POST'>
+  <div class='row'>
+  <div class="input-field col s3">
+    <select id="login" name="login">
+      <option value="" disabled selected>Выберите пользователя</option>
+      $for u in users:
+      	<option value="$u.login">$u.login</option>
+    </select>
+    <label>Пользователь</label>
+  </div>
+  <div class="input-field col s3">
+    <select id="role_id" name="role_id">
+      <option value="" disabled selected>Выберите роль</option>
+      $for r in roles:
+      	<option value="$r.id">$r.role</option>
+    </select>
+    <label>Роль</label>
+  </div>
+  <button class="btn-floating btn-large waves-effect waves-light" type="submit" name="action">
+  	<i class="material-icons">account_circle</i>
+  </button>
+  </div>
+  </form>
+  <table class='striped'>
+  	<thead>
+  		<tr>
+  			<th>Пользователь</th>
+  			<th>Роль</th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		$for u in users:
+  			$ role = [r.role for r in roles if u.role_id == r.id][0]
+  			<tr>
+  				<td>$u.login</td>
+  				<td>$role</td>
+  			</tr>
+  	</tbody>
+  </table>
+  <script>
+  	$$(document).ready(function(){
+  			$$('select').material_select();
+  	});
+  </script>
+  </body>
+  </html>
